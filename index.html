@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Printer Cartridge Stock Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 80%;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Printer Cartridge Stock Tracker</h1>
+    <h2>Stock Details</h2>
+    <table id="cartridgeTable">
+        <thead>
+            <tr>
+                <th>Cartridge Model</th>
+                <th>Total Quantity</th>
+                <th>Remaining Quantity</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Model A</td>
+                <td>10</td>
+                <td class="remaining">10</td>
+                <td><button onclick="takeCartridge('Model A')">Take Cartridge</button></td>
+            </tr>
+            <tr>
+                <td>Model B</td>
+                <td>5</td>
+                <td class="remaining">5</td>
+                <td><button onclick="takeCartridge('Model B')">Take Cartridge</button></td>
+            </tr>
+            <tr>
+                <td>Model C</td>
+                <td>8</td>
+                <td class="remaining">8</td>
+                <td><button onclick="takeCartridge('Model C')">Take Cartridge</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Employee List</h2>
+    <div>
+        <p>Employee 1: John Doe</p>
+        <p>Employee 2: Jane Smith</p>
+        <p>Employee 3: Emily Johnson</p>
+    </div>
+
+    <script>
+        function takeCartridge(model) {
+            const rows = document.querySelectorAll('#cartridgeTable tbody tr');
+            for (const row of rows) {
+                const cartridgeModel = row.cells[0].innerText;
+                const remainingCell = row.querySelector('.remaining');
+                let remainingQuantity = parseInt(remainingCell.innerText);
+
+                if (cartridgeModel === model && remainingQuantity > 0) {
+                    remainingQuantity--;
+                    remainingCell.innerText = remainingQuantity;
+                    alert(`One cartridge of ${model} taken. Remaining: ${remainingQuantity}`);
+                    return;
+                }
+            }
+            alert(`No remaining cartridges for ${model}.`);
+        }
+    </script>
+</body>
+</html>
