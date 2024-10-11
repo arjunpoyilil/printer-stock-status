@@ -42,36 +42,18 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>12 A Catridge</td>
-                <td>10</td>
-                <td class="remaining">10</td>
-                <td><button onclick="takeCartridge('12 A Catridge')">Take Cartridge</button></td>
-            </tr>
-            <tr>
-                <td>88 A Catridge</td>
-                <td>5</td>
-                <td class="remaining">5</td>
-                <td><button onclick="takeCartridge('88 A Catridge')">Take Cartridge</button></td>
-            </tr>
-            <tr>
-                <td>925 Catridge</td>
-                <td>8</td>
-                <td class="remaining">8</td>
-                <td><button onclick="takeCartridge('925 Catridge')">Take Cartridge</button></td>
-            </tr>
+            <!-- Data will be populated here dynamically -->
         </tbody>
     </table>
 
     <h2>Employee List</h2>
-      <label for="employee">Select Employee:</label>
-<select id="employee" name="employee">
-    <option value="employee1">Raseen</option>
-    <option value="employee2">Kishore</option>
-    <option value="employee2">Fahis</option>
-    <option value="employee2">Anas</option>
-    <!-- Add more options as needed -->
-</select>
+    <label for="employee">Select Employee:</label>
+    <select id="employee" name="employee">
+        <option value="employee1">Raseen</option>
+        <option value="employee2">Kishore</option>
+        <option value="employee3">Fahis</option>
+        <option value="employee4">Anas</option>
+    </select>
 
     <label for="location">Select Location:</label>
     <select id="location" name="location">
@@ -84,19 +66,32 @@
 
     <script>
         document.getElementById('generateReport').addEventListener('click', generateReport);
+        window.onload = loadCartridges;
 
-        function generateReport() {
-            const selectedEmployee = document.getElementById('employee').value;
-            const selectedLocation = document.getElementById('location').value;
-            // Logic to fetch and display the report
-            document.getElementById('reportResults').innerText = `Report for ${selectedEmployee} at ${selectedLocation}`;
+        async function loadCartridges() {
+            const response = await fetch('fetch_cartridges.php');
+            const cartridges = await response.json();
+            const tbody = document.querySelector('#cartridgeTable tbody');
+            tbody.innerHTML = ''; // Clear existing rows
+
+            cartridges.forEach(cartridge => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${cartridge.model}</td>
+                    <td><input type="number" value="${cartridge.total_quantity}" onchange="updateTotal('${cartridge.model}', this.value)" /></td>
+                    <td class="remaining">${cartridge.remaining_quantity}</td>
+                    <td><button onclick="takeCartridge('${cartridge.model}')">Take Cartridge</button></td>
+                `;
+                tbody.appendChild(row);
+            });
         }
 
-    <div>
-    
-    </div>
+        function updateTotal(model, newTotal) {
+            // You can implement an AJAX call to update the database here
+            console.log(`Update ${model} total quantity to ${newTotal}`);
+            // Example: Send an AJAX request to update the quantity in the database
+        }
 
-    <script>
         function takeCartridge(model) {
             const rows = document.querySelectorAll('#cartridgeTable tbody tr');
             for (const row of rows) {
@@ -112,6 +107,12 @@
                 }
             }
             alert(`No remaining cartridges for ${model}.`);
+        }
+
+        function generateReport() {
+            const selectedEmployee = document.getElementById('employee').value;
+            const selectedLocation = document.getElementById('location').value;
+            document.getElementById('reportResults').innerText = `Report for ${selectedEmployee} at ${selectedLocation}`;
         }
     </script>
 </body>
