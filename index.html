@@ -46,6 +46,24 @@
         </tbody>
     </table>
 
+    <script>
+        function takeCartridge(model) {
+            const rows = document.querySelectorAll('#cartridgeTable tbody tr');
+            for (const row of rows) {
+                const cartridgeModel = row.cells[0].innerText;
+                const remainingCell = row.querySelector('.remaining');
+                let remainingQuantity = parseInt(remainingCell.innerText);
+
+                if (cartridgeModel === model && remainingQuantity > 0) {
+                    remainingQuantity--;
+                    remainingCell.innerText = remainingQuantity;
+                    alert(`One cartridge of ${model} taken. Remaining: ${remainingQuantity}`);
+                    return;
+                }
+            }
+            alert(`No remaining cartridges for ${model}.`);
+        }
+
     <h2>Employee List</h2>
     <label for="employee">Select Employee:</label>
     <select id="employee" name="employee">
