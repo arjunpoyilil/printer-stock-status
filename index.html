@@ -65,34 +65,8 @@
     <button id="generateReport">Generate Report</button>
     <div id="reportResults"></div>
 
-    <script>
-        document.getElementById('generateReport').addEventListener('click', generateReport);
-        window.onload = loadCartridges;
 
-        async function loadCartridges() {
-            try {
-                const response = await fetch('fetch_cartridges.php');
-                const cartridges = await response.json();
-                const tbody = document.querySelector('#cartridgeTable tbody');
-                tbody.innerHTML = ''; // Clear existing rows
-
-                cartridges.forEach(cartridge => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${cartridge.model}</td>
-                        <td><input type="number" value="${cartridge.total_quantity}" onchange="updateTotal('${cartridge.model}', this.value)" /></td>
-                        <td class="remaining">${cartridge.remaining_quantity}</td>
-                        <td><button onclick="takeCartridge('${cartridge.model}')">Take Cartridge</button></td>
-                    `;
-                    tbody.appendChild(row);
-                });
-            } catch (error) {
-                console.error('Error loading cartridges:', error);
-            }
-        }
-        {
-    
-        <script>
+       <script>
         function takeCartridge(model) {
             const rows = document.querySelectorAll('#cartridgeTable tbody tr');
             for (const row of rows) {
@@ -109,6 +83,10 @@
             alert(`No remaining cartridges for ${model}.`);
         }
 
+            }
+        }
+    
+        
 
         function updateTotal(model, newTotal) {
             console.log(`Update ${model} total quantity to ${newTotal}`);
